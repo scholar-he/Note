@@ -1,0 +1,14 @@
+iperf自环网口测试步骤：
+
+1.设置网口隔离
+  ip netns add eno1
+  ip netns add eno2
+  ip link set eno1 netns eno1
+  ip link set eno2 netns eno2
+2.给网口配ip
+  ip netns exec eno1 ifconfig eno1 10.10.10.101
+  ip netns exec eno2 ifconfig eno2 10.10.10.102
+3.开始iperf测试
+  ip netns exec eno1 iperf -s
+  ip netns exec eno2 iperf -c 10.10.10.101 -i 2 -t 60
+  
