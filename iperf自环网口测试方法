@@ -9,6 +9,18 @@ iperf自环网口测试步骤：
   ip netns exec eno1 ifconfig eno1 10.10.10.101
   ip netns exec eno2 ifconfig eno2 10.10.10.102
 3.开始iperf测试
-  ip netns exec eno1 iperf -s
-  ip netns exec eno2 iperf -c 10.10.10.101 -i 2 -t 60
+  同一服务器开两个终端，作为两台服务器
+  server端：
+    ip netns exec eno1 iperf -s
+  client端：
+    ip netns exec eno2 iperf -c 10.10.10.101 -i 2 -t 60
   
+测试完成后释放网口隔离
+ip netns del /var/run/netns/eno1
+ip netns del /var/run/netns/eno2
+
+
+注意事项：
+1.eno1,eno2根据实际网线连接情况及ifconfig查到的网口名设置。
+2.自环测试所有待测网口必须在插在同一个交换机上。
+3.有些网卡设置网口隔离后不能释放，疑似产品问题，暂无很好的方法解决，可以通过重启服务器恢复设置。
