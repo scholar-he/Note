@@ -1,0 +1,13 @@
+github搜索项目常用的命令：
+
+in:name python # 在名字里有python关键字的
+
+in:readme python # 在readme中有python关键字的
+
+in:description python # 在描述理由python关键字的
+
+stars:>=100 # stars数量大于100的
+
+language:python # python语言
+
+pushed:>2019-09-01 # 推送在2019-09-01日后的
