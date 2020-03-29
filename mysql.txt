@@ -1,0 +1,96 @@
+1.mysql常用操作指令
+mysql -h hostIP -u 用户名 -p 进入mysql
+show databases;
+use 数据库名称;
+show tables;
+desc 表名称;
+show engines;
+
+2.常见数据类型
+1)数值类型
+tinyint(-2^7~-2^7-1)
+smallint(-2^15~2^15-1)
+int(-2^31~2^31-1)
+bigint(-2^63~2^63-1)
+float、double、decimal
+2)字符串类型
+char(用于声明定长的数据)
+varchar(用于声明变长的数据)
+text(存储大文本数据)
+3)日期时间类型
+date(存储格式：YYYY-MM-DD)
+time(存储格式：HH:MM:SS)
+datetime(存储格式：YYYY-MM-SS HH:MM:SS)
+timestamp
+
+3.基本sql语句
+create databases 数据库名 [charset utf8]; // database和schema同义
+create table 表名称 (
+	字段名 字段数据类型 约束,
+	字段名 字段数据类型 约束,
+	...
+	字段名 字段数据类型 约束,
+) [engine=MyISAM];
+# 默认引擎MyISAM，是一个性能极高的引擎，它支持全文搜索，但不支持事物处理
+# InnoDB是一个可靠的事物处理引擎，他不支持全文搜索
+# MEMORY在功能上等同于MyISAM但由于数据库存在内存中，速度很快（特别适合于临时表）
+
+# 插入数据
+1)insert [into] 表名称 values (值1, 值2,...); // 按表中原字段的顺序插入值
+2)insert [into] 表名称 (字段1, 字段2,...) values (值1, 值2,...);
+3)insert [into] 表名称 (字段1, 字段2,...) values (值1, 值2,..),(值1, 值2,...)...(值1, 值2,...);
+
+# 修改记录
+update 表名称 set 字段名=修改值 [, 字段名=修改值,...] [where 条件];
+
+# 删除
+drop database 数据库名称;
+drop table 表名称;
+delete from 表名称 [where 条件];
+
+# 查询
+1)基本查询：select 字段列表 from 表名称 [where 条件]; // *表示查询所有字段
+2)限制查询：select 字段列表 from 表名称 [where 条件] limit 条数;
+			select 字段列表 from 表名称 [where 条件] limit 起始位置,条数;
+3)排序查询：select 字段列表 from 表名称 [where 条件] order by 字段名 [,字段名] [desc];
+4)分组查询：select 字段列表 from 表名称 [where 条件] group by 分组字段列表 [having 对分组后的筛选条件];
+# 注意：分组查询经常和聚合函数一起使用
+		分组字段应该与查询字段保持一致
+     max(字段名)  获取某字段中的最大值
+     min(字段名)  获取某字段中的最小值
+     sum(字段名)  计算某字段值的和
+     avg(字段名)  计算某字段的平均值
+     count(字段名) 计算某字段值中不为null的记录数
+     count(*)  计算表中的总记录数
+5)分页查询
+已知当前页为currentPage,每页最多显示的记录数为pageSize,则currentPage页显示的表中的记录为：
+select 字段列表 from 表名称 [where 条件] limit (currentPage-1)*pageSize,pageSize;
+
+6)模糊查询
+%   代表任意多个任意字符
+_   代表任意一个字符
+
+
+# 子查询(套嵌查询)
+
+# 外键约束
+
+# 多表查询
+
+# 外键约束
+
+# 合并查询
+
+# 关系表设计
+1)一对一
+2)一对多
+3)多对多
+
+# 事物
+
+# 索引
+
+# 视图
+
+# 用户管理与权限设置
+
