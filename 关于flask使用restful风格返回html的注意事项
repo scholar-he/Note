@@ -1,0 +1,14 @@
+我们在使用flask restful返回资源时
+如果使用render_template()渲染模板，前端会显示类似字符串的数据
+因为 flask restful 支持的mediatype仅为application/json，对应的处理函数为 output_json。
+如果要输出 html 格式的内容，则需要自己添加处理对应mediatype的函数
+
+我们有两种方式来解决这个问题：
+1.使用send_template_fromdirectory()方法
+2.始终api.representation装饰器来解决
+api = Api(app=app, prefix="/rms")
+api.add_resource(IndexController, "/index/")
+
+@api.representation("text/html")
+def out_html(data, code, headers=None):
+    return make_response(data)
