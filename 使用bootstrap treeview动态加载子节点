@@ -1,0 +1,74 @@
+// 使用bootstrap treeview动态加载子节点
+// 参考链接：https://blog.csdn.net/qq_37014541/article/details/100761205?depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-10&utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-10
+
+
+let baseUrl = ""
+
+// 获取json数据
+function showNode(uri) {
+	uri = typeof uri !== "undefined" ? uri : "/";
+    $.ajax({
+        url: baseUrl + uri,
+        type: "GET",
+        async:false,
+        success: function(data) {
+        	response= data;
+        }
+    });
+    return response;
+};
+
+
+// 组装节点数据
+function getTree(resp){
+	var data = new Array();
+	for (var i in resp){
+		// 判断是文件夹还是用例
+		if (resp[i].hasOwnProperty("TestStep")){
+			data.push({
+			'text':resp[i]["name"],
+			'uri':resp[i]["uri"],
+			})
+		}
+		else{
+			data.push({
+			'text':resp[i]["name"],
+			'uri':resp[i]["uri"],
+			'nodes':[]
+			})
+		}
+	}
+//	console.log(data);
+	return data;
+}
+ 
+
+// $(function(){...})这个是在页面DOM文档加载完成后加载执行的，等效于$(document).ready(function(){...});
+// 优于window.onload，后者必须等到页面内包括图片的所有元素加载完毕后才能执行
+$(function () {
+	
+	// 展示根节点
+	var resp = showNode("/g85pj493do9/g85pj5oednq1/");
+    $('#treeview').treeview({
+    	data: getTree(resp),
+    	showTags: true,
+        evels: 2,
+       	showTags: true
+    });
+   	
+   	// 动态加载子节点
+   	$('#treeview').on('nodeExpanded', function(event, data){
+   		var id = data['nodeId'];
+   		var uri = data['uri'];
+   		var data = showNode(uri);
+   		$("#treeview").treeview("deleteChildrenNode", id); // 删除当前节点下的所有子节点
+   		var childresp = getTree(data);
+   		console.log(childresp);
+   		for (var i = 0; i < childresp.length; i++){
+   			$("#treeview").treeview("addNode", [id, {node: childresp[i]}]); 
+   		}
+   		
+   		
+   	})
+
+});
