@@ -1,0 +1,26 @@
+import argparse
+import sys
+
+
+def usage():
+    msg = """
+        ***********************************************************************
+
+        *                               Tesing help                           *
+
+        ***********************************************************************
+        """
+    parser = argparse.ArgumentParser(description=msg, formatter_class=argparse.RawDescriptionHelpFormatter)
+
+    parser.add_argument("-n", "--number", help="A number input", type=int, metavar='')
+
+    args = parser.parse_args()
+    if args.number:
+        print("{} power is {}".format(args.number, args.number**2))
+        sys.exit(0)
+
+    return parser.print_help()
+
+
+if __name__ == '__main__':
+    usage()
