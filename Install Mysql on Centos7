@@ -1,0 +1,22 @@
+1.下载Mysql全量安装包，如果选择在线安装可能会很慢
+	https://dev.mysql.com/downloads/mysql/
+2.将tar包上传至linux, tar -xvf解压
+3.centos7自带的mariadb与MySQL冲突，删掉
+	yum list installed | grep mariadb
+	rmp -e mariadb-libs.x86_64 --nodeps
+4.顺序安装4个安装包
+	rpm -ivh MySQL-server-5.6.41-1.el7.x86_64.rpm
+	rpm -ivh MySQL-client-5.6.41-1.el7.x86_64.rpm
+	rpm -ivh MySQL-devel-5.6.41-1.el7.x86_64.rpm
+	rpm -ivh MySQL-shared-5.6.41-1.el7.x86_64.rpm
+5.启动mysql服务
+	service mysql start
+6.查找server端安装时生成的随机密码
+	find / -name .mysql_secret
+	cat /root/.mysql_secret
+7.使用随机密码登录后改密码，刷新权限
+	mysql -u root -p
+	SET PASSWORD=password('password');
+	FLUSH PRIVILEGES;
+8.设置远程访问权限
+	grant all privileges on *.* to 'root'@'%'identified by 'password';
